@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -32,8 +33,23 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'category_id',
-            'img',
-            'content:ntext',
+            // 'img',
+            [
+                'format'=>'html',
+                'attribute'=>'img',
+                'value'=>function($data){
+                    return html::img(url::to("@web/newsimg/".$data->img),['width'=>"300px"]);
+                }
+            ],
+            // 'content:ntext',
+            [
+                'attribute'=>'content',
+                'format'=>'html',
+                'value'=>function($data){
+                    $datas = $data->content;
+                    return str_replace(["\n","<img src="],["</p><p>",'<img class="img-rounded img-responsive" src='],$datas);
+                }
+            ],
             'time',
         ],
     ]) ?>
