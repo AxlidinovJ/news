@@ -3,11 +3,12 @@
 namespace backend\controllers;
 
 use console\models\Category;
+use console\models\News;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\filters\AccessControl;
 /**
  * CategoryController implements the CRUD actions for Category model.
  */
@@ -16,10 +17,22 @@ class CategoryController extends Controller
     public $layout  = 'adminlte';
 
    
-    /**
-     * Lists all Category models.
-     * @return mixed
-     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [ 
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
@@ -99,8 +112,12 @@ class CategoryController extends Controller
 
     public function actionDelete($id)
     {
+        $news = News::find()->where("category_id=$id")->all();
+        foreach ($news as $new) {
+            unlink("newsimg/".$new->img);
+            $new->delete();
+        }
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 
