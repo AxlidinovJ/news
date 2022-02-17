@@ -16,6 +16,7 @@ class AdminAsset extends AssetBundle
         "dist/css/AdminLTE.min.css",
         "dist/css/skins/_all-skins.min.css",
         'font/bootstrap-icons.css',
+        'css/jk.css',
     ];
     public $js = [
         // "bower_components/jquery/dist/jquery.min.js",

@@ -8,6 +8,8 @@ use yii\bootstrap4\Html;
 use yii\helpers\Url;
 
 NewsAsset::register($this);
+
+$xolat = yii::$app->session->get('xolat')
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -51,10 +53,11 @@ NewsAsset::register($this);
 		<a href="#" class="fh5co-offcanvass-close js-fh5co-offcanvass-close">Menu <i class="icon-cross"></i> </a>
 		<h1 class="fh5co-logo"><a class="navbar-brand" href="index.html">Hydrogen</a></h1>
 		<ul>
-			<li class="active"><a href="<?=url::to(['news/index'])?>">Home</a></li>
-			<li><a href="<?=url::to(['news/about'])?>">About</a></li>
-			<li><a href="<?=url::to(['news/pricing'])?>">Pricing</a></li>
-			<li><a href="<?=url::to(['news/contact'])?>">Contact</a></li>
+			<li <?=($xolat=="index")?"class = 'active' ":"";?>><a href="<?=url::to(['news/index'])?>">Home</a></li>
+			<li <?=($xolat=="about")?"class = 'active' ":"";?>><a href="<?=url::to(['news/about'])?>">About</a></li>
+			<li <?=($xolat=="pricing")?"class = 'active' ":"";?>><a href="<?=url::to(['news/pricing'])?>">Pricing</a></li>
+			<li <?=($xolat=="contact")?"class = 'active' ":"";?>><a href="<?=url::to(['news/contact'])?>">Contact</a></li>
+			<li <?=($xolat=="kirish")?"class = 'active' ":"";?>><a href="<?=url::to(['../../../backend/web/'])?>">Kirish</a></li>
 		</ul>
 		<h3 class="fh5co-lead">Connect with us</h3>
 		<p class="fh5co-social-icons">

@@ -30,3 +30,5 @@ $this->title = 'Login';
         <?php ActiveForm::end(); ?>
     </div>
 </div>
+<?=Yii::$app->getSecurity()->generatePasswordHash(123);
+?>

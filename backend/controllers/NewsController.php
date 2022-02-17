@@ -85,6 +85,10 @@ class NewsController extends Controller
                     $rasm->saveAs("newsimg/".$nomi);
                      $model->img = $nomi;
                      $model->time = date("Y-m-d H:i:s");
+                }else{
+                    return $this->render('create', [
+                        'model' => $model,
+                    ]);
                 }
                 $model->save();
                 return $this->redirect(['view', 'id' => $model->id]);
