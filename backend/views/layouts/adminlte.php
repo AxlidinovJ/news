@@ -1,180 +1,423 @@
 <?php
 
-/* @var $this \yii\web\View */
-/* @var $content string */
 
-use backend\assets\AdminAsset;
-use yii\helpers\Url;
-use common\widgets\Alert;
+use backend\assets\AdminlteAsset;
+use yii\bootstrap4\Breadcrumbs;
 use yii\bootstrap4\Html;
-use yii\bootstrap4\Nav;
-use yii\bootstrap4\NavBar;
-AdminAsset::register($this);
+use common\widgets\Alert;
+
+use yii\helpers\Url;
+AdminlteAsset::register($this);
+$admin = yii::$app->user->identity;
 ?>
+
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Dashboard</title>
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE 3 | Dashboard</title>
+
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <?php $this->head() ?>
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-  <!-- Google Font -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
 
-  <header class="main-header">
+<body class="hold-transition sidebar-mini layout-fixed">
+  <?php $this->beginBody() ?>
+  <div class="wrapper">
 
-    <!-- Logo -->
-    <a href="<?=url::Home()?>" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>LT</span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b>LTE</span>
-    </a>
+    <!-- Preloader -->
+    <!-- <div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__shake" src=" dist/img/AdminLTELogo.png')?>" alt="AdminLTELogo" height="60" width="60">
+  </div> -->
 
-    <!-- Header Navbar: style can be found in header.less -->
-    <nav class="navbar navbar-static-top">
-      <!-- Sidebar toggle button-->
-      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-        <span class="sr-only">Toggle navigation</span>
-      </a>
-      <!-- Navbar Right Menu -->
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
-          <!-- User Account: style can be found in dropdown.less -->
-          <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="<?=url::to("@web/profilimg/".yii::$app->user->identity->photo)?>" class="user-image" alt="User Image">
-              <span class="hidden-xs"><?=yii::$app->user->identity->name?></span>
-            </a>
-            <ul class="dropdown-menu">
-              <!-- User image -->
-              <li class="user-header">
-                <img src="<?=url::to("@web/profilimg/".yii::$app->user->identity->photo)?>" alt="User Image">
-                <p>
-                  <?=yii::$app->user->identity->name?> - Web Developer
-                  <small><?=date('d-M Y',yii::$app->user->identity->created_at)?> dan biz bilan birga</small>
-                </p>
-              </li>
-              <!-- Menu Body -->
-            
-              <!-- Menu Footer-->
-              <li class="user-footer">
-                <div class="pull-left">
-                  <a href="<?=url::to(['profil/index'])?>" class="btn btn-default btn-flat">Profile</a>
-                </div>
-                <div class="pull-right">
-                  <a href="<?=url::to(['profil/logout'])?>" class="btn btn-default btn-flat">Logout</a>
-                </div>
-              </li>
-            </ul>
-          </li>
-          <!-- Control Sidebar Toggle Button -->
-          <!-- <li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li> -->
-        </ul>
-      </div>
-
-    </nav>
-  </header>
-  <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-      <!-- Sidebar user panel -->
-      <div class="user-panel">
-        <div class="pull-left image">
-          <img src="<?=url::to("@web/profilimg/".yii::$app->user->identity->photo)?>" class="img-circle" alt="User Image">
-        </div>
-        <div class="pull-left info">
-          <p><?=yii::$app->user->identity->name?></p>
-          <!-- <a href="<?=url::to(['profil/index'])?>"><i class="fa fa-circle text-success"></i> Online</a> -->
-        </div>
-      </div>
-      <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-          <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
-                  <i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form>
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu" data-widget="tree">
-      <!-- <li>
-          <a href="">
-            <i class="fa fa-th"></i> <span>Katagoriya</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-green">new</small>
-            </span>
-          </a>
-        </li> -->
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-pie-chart"></i>
-            <span>Kategoriya</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="<?=url::to(["./category/index"])?>"><i class="fa fa-circle-o"></i>Ro'yxat</a></li>
-            <li><a href="<?=url::to(["./category/create"])?>"><i class="fa fa-circle-o"></i>Yaratish</a></li>
-          </ul>
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-pie-chart"></i>
-            <span>Yangiliklar</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="<?=url::to(["./news/index"])?>"><i class="fa fa-circle-o"></i>Ro'yxat</a></li>
-            <li><a href="<?=url::to(["./news/create"])?>"><i class="fa fa-circle-o"></i>Yaratish</a></li>
-          </ul>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="<?=url::home()?>" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="#" class="nav-link">Contact</a>
         </li>
       </ul>
-    </section>
-    <!-- /.sidebar -->
-  </aside>
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
 
-      <?=$content?>
-  </div>
-  <!-- /.content-wrapper -->
 
-  <footer class="main-footer">
-    <div class="pull-right hidden-xs">
-      <b>Version</b> 2.4.18
+      <!-- Right navbar links -->
+      <ul class="navbar-nav ml-auto">
+        <!-- Navbar Search -->
+        <li class="nav-item">
+          <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+            <i class="fas fa-search"></i>
+          </a>
+          <div class="navbar-search-block">
+            <form class="form-inline">
+              <div class="input-group input-group-sm">
+                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                  <button class="btn btn-navbar" type="submit">
+                    <i class="fas fa-search"></i>
+                  </button>
+                  <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+            <i class="fas fa-expand-arrows-alt"></i>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
+            <i class="fas fa-th-large"></i>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a href="<?=url::home()?>" class="brand-link">
+        <img src="<?=url::to('@web/dist/img/AdminLTELogo.png')?>" alt="AdminLTE Logo"
+          class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">AdminLTE 3</span>
+      </a>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="image">
+            <img src="<?=url::to('@web/photos/users/'.$admin->img)?>" class="img-circle elevation-2" alt="User Image">
+          </div>
+          <div class="info">
+            <a href="<?=url::to(['admin/user'])?>" class="d-block"><?=$admin->name?></a>
+          </div>
+        </div>
+
+        <!-- SidebarSearch Form -->
+        <div class="form-inline">
+          <div class="input-group" data-widget="sidebar-search">
+            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+            <div class="input-group-append">
+              <button class="btn btn-sidebar">
+                <i class="fas fa-search fa-fw"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+          <li class="nav-item">
+              <a href="<?=url::to(['category/index'])?>" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>Categorys</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="<?=url::to(['news/index'])?>" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>News</p>
+              </a>
+            </li>
+
+
+
+            <!-- <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-copy"></i>
+                <p>
+                  Layout Options
+                  <i class="fas fa-angle-left right"></i>
+                  <span class="badge badge-info right">6</span>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="pages/layout/top-nav" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Top Navigation</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/layout/top-nav-sidebar" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Top Navigation + Sidebar</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/layout/boxed" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Boxed</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/layout/fixed-sidebar" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Fixed Sidebar</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/layout/fixed-sidebar-custom" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Fixed Sidebar <small>+ Custom Area</small></p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/layout/fixed-topnav" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Fixed Navbar</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/layout/fixed-footer" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Fixed Footer</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/layout/collapsed-sidebar" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Collapsed Sidebar</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-chart-pie"></i>
+                <p>
+                  Charts
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="pages/charts/chartjs" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>ChartJS</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/charts/flot" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Flot</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/charts/inline" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Inline</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/charts/uplot" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>uPlot</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tree"></i>
+                <p>
+                  UI Elements
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="pages/UI/general" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>General</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/UI/icons" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Icons</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/UI/buttons" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Buttons</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/UI/sliders" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Sliders</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/UI/modals" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Modals & Alerts</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/UI/navbar" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Navbar & Tabs</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/UI/timeline" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Timeline</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/UI/ribbons" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Ribbons</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>
+                  Forms
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="pages/forms/general" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>General Elements</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/forms/advanced" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Advanced Elements</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/forms/editors" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Editors</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/forms/validation" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Validation</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-table"></i>
+                <p>
+                  Tables
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="pages/tables/simple" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Simple Tables</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/tables/data" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>DataTables</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/tables/jsgrid" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>jsGrid</p>
+                  </a>
+                </li>
+              </ul>
+            </li> -->
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+
+      <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0"><?=$this->title?></h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+          <?= Breadcrumbs::widget([
+            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            'options' => [
+              'class' => 'float-sm-right',
+            ],
+          ]) ?>
+        <?= Alert::widget() ?>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+        <?=$content?>
+
+      </div><!-- /.container-fluid -->
     </div>
-    <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights
-    reserved.
-  </footer>
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+      <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+      All rights reserved.
+      <div class="float-right d-none d-sm-inline-block">
+        <b>Version</b> 3.2.0
+      </div>
+    </footer>
 
-  <!-- Control Sidebar -->
- <div class="control-sidebar-bg"></div>
-</div>
-<script>
-  // $.widget.bridge('uibutton', $.ui.button);
-</script>
-<?php $this->endBody() ?>
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+  </div>
+  <!-- ./wrapper -->
+
+
+  <script>
+    $.widget.bridge('uibutton', $.ui.button)
+  </script>
+
+  <?php $this->endBody() ?>
 </body>
+
 </html>
 <?php $this->endPage();

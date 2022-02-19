@@ -4,25 +4,23 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model console\models\Category */
+/* @var $model common\models\Category */
 
-$this->title = $model->id;
+$this->title = $model->catagory_name;
 $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="category-view container-fluid">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="category-view">
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
-            // 'data' => [
-            //     'confirm' => 'Are you sure you want to delete this item?',
-            //     'method' => 'post',
-            // ],
+            'data' => [
+                'confirm' => 'Are you sure you want to delete this item?',
+                'method' => 'post',
+            ],
         ]) ?>
     </p>
 

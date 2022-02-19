@@ -2,37 +2,39 @@
 
 namespace backend\controllers;
 
-use console\models\Category;
-use console\models\News;
+use common\models\Category;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
+
 /**
  * CategoryController implements the CRUD actions for Category model.
  */
 class CategoryController extends Controller
 {
-    public $layout  = 'adminlte';
+   public $layout = "adminlte";
 
-   
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [ 
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
                     ],
                 ],
-            ],
-        ];
+            ]
+        );
     }
 
-
+    /**
+     * Lists all Category models.
+     *
+     * @return string
+     */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
@@ -56,8 +58,8 @@ class CategoryController extends Controller
 
     /**
      * Displays a single Category model.
-     * @param integer $id
-     * @return mixed
+     * @param int $id ID
+     * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -70,15 +72,14 @@ class CategoryController extends Controller
     /**
      * Creates a new Category model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
         $model = new Category();
+
         if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $model->date = date("Y-m-d");
-                $model->save();
+            if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -93,8 +94,8 @@ class CategoryController extends Controller
     /**
      * Updates an existing Category model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
+     * @param int $id ID
+     * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -110,22 +111,33 @@ class CategoryController extends Controller
         ]);
     }
 
+    /**
+     * Deletes an existing Category model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param int $id ID
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionDelete($id)
     {
-        $news = News::find()->where("category_id=$id")->all();
-        foreach ($news as $new) {
-            unlink("newsimg/".$new->img);
-            $new->delete();
-        }
         $this->findModel($id)->delete();
+
         return $this->redirect(['index']);
     }
 
+    /**
+     * Finds the Category model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param int $id ID
+     * @return Category the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     protected function findModel($id)
     {
-        if (($model = Category::findOne($id)) !== null) {
+        if (($model = Category::findOne(['id' => $id])) !== null) {
             return $model;
         }
+
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

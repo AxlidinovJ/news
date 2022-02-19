@@ -2,10 +2,7 @@
 
 namespace backend\controllers;
 
-use backend\models\User;
 use common\models\LoginForm;
-use console\models\Category;
-use console\models\News;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -17,25 +14,29 @@ use yii\web\Response;
  */
 class SiteController extends Controller
 {
-   
-    public $layout  = 'adminlte';
 
+    public $layout = 'adminlte';
     public function behaviors()
     {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'rules' => [ 
+                'rules' => [
                     [
-                        'actions'=>['login'],
+                        'actions' => ['login', 'error'],
                         'allow' => true,
-                        'roles' => ['?'],
                     ],
                     [
-                        // 'actions'=>['login'],
+                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
                 ],
             ],
         ];
@@ -60,14 +61,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $bolim = count(Category::find()->all());
-        $yangilik = count(News::find()->all());
-        $users = count(User::find()->all());
-        return $this->render('index',[
-            'bolim'=>$bolim,
-            'yangilik'=>$yangilik,
-            'users'=>$users,
-        ]);
+        return $this->render('index');
     }
 
     /**

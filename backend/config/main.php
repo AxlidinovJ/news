@@ -7,20 +7,19 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-backend',
     'language'=>'uz',
+    'defaultRoute'=>'admin/index',
+    'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
+    'container' => [
+        'definitions' => [
+            \yii\widgets\LinkPager::class => \yii\bootstrap4\LinkPager::class,
+        ],
+    ],
     'components' => [
-    //     'view' => [
-    //         'theme' => [
-    //             'pathMap' => [
-    //                '@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app'
-    //             ],
-    //         ],
-    //    ],
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
@@ -45,14 +44,14 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        
+        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
-            'showScriptName' => true,
+            'showScriptName' => false,
             'rules' => [
             ],
         ],
-
+        */
     ],
     'params' => $params,
 ];

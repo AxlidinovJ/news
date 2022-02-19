@@ -3,18 +3,28 @@
 namespace frontend\controllers;
 use Yii;
 use yii\web\Controller;
-use console\models\News;
-use console\models\Category;
+use common\models\News;
+use common\models\Category;
 use frontend\models\SendmailForm;
+use yii\data\Pagination;
 
 class NewsController extends Controller
 {
     public $layout = 'news';
     public function actionIndex()
     {
-        $news  = news::find()->all();
+        $query  = news::find()->orderBy('id DESC');
+        $pages = new Pagination([
+            'defaultPageSize'=>12,
+            'totalCount'=>$query->count(),
+        ]);
+        $news = $query->offset($pages->offset)
+        ->limit($pages->limit)
+        ->all();
+
         yii::$app->session->set('xolat','index');
-        return $this->render('index',['news'=>$news]);
+
+        return $this->render('index',['news'=>$news,'pages'=>$pages]);
     }
     public function actionAbout()
     {

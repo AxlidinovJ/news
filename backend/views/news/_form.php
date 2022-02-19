@@ -1,10 +1,9 @@
 <?php
 
 use yii\bootstrap4\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 use yii\helpers\ArrayHelper;
-use console\models\Category;
-
+use common\models\Category;
 use dosamigos\tinymce\TinyMce;
 
 

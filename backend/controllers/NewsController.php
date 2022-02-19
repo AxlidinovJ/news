@@ -2,38 +2,26 @@
 
 namespace backend\controllers;
 
-use console\models\News;
+use common\models\News;
 use yii\base\Security;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
-use yii\filters\AccessControl;
+use yii\web\UploadedFile as WebUploadedFile;
+
 /**
  * NewsController implements the CRUD actions for News model.
  */
 class NewsController extends Controller
 {
-    public $layout  = 'adminlte';
+    public $layout = "adminlte";
+  
 
-
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [ 
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-        ];
-    }
-
-
+    /**
+     * Lists all News models.
+     *
+     * @return string
+     */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
@@ -42,12 +30,13 @@ class NewsController extends Controller
             'pagination' => [
                 'pageSize' => 50
             ],
+            */
+
             'sort' => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
                 ]
             ],
-            */
         ]);
 
         return $this->render('index', [
@@ -57,8 +46,8 @@ class NewsController extends Controller
 
     /**
      * Displays a single News model.
-     * @param integer $id
-     * @return mixed
+     * @param int $id ID
+     * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -68,21 +57,16 @@ class NewsController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new News model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
     {
         $model = new News();
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-                $rasm = UploadedFile::getInstance($model,'img');
+                $rasm = WebUploadedFile::getInstance($model,'img');
                 $random = new Security();
                 if($rasm){
                     $nomi = $random->generateRandomString(32).".".$rasm->extension;
-                    $rasm->saveAs("newsimg/".$nomi);
+                    $rasm->saveAs("photos/newsimg/".$nomi);
                      $model->img = $nomi;
                      $model->time = date("Y-m-d H:i:s");
                 }else{
@@ -90,6 +74,7 @@ class NewsController extends Controller
                         'model' => $model,
                     ]);
                 }
+                $model->author = \yii::$app->user->identity->id;
                 $model->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -115,12 +100,12 @@ class NewsController extends Controller
         $nomi = $model->img;
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-                $rasm = UploadedFile::getInstance($model,'img');
+                $rasm = WebUploadedFile::getInstance($model,'img');
                 $random = new Security();
                 if($rasm){
-                    unlink("newsimg/".$nomi);
+                    unlink("photos/newsimg/".$nomi);
                     $nomi = $random->generateRandomString(32).".".$rasm->extension;
-                    $rasm->saveAs("newsimg/".$nomi);
+                    $rasm->saveAs("photos/newsimg/".$nomi);
                 }
                 $model->img = $nomi;
                 $model->time = date("Y-m-d H:i:s");
@@ -136,13 +121,25 @@ class NewsController extends Controller
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+
+        $model = $this->findModel($id);
+        if($model->img!=="no-img.png" and file_exists("photos/newsimg/".$model->img)){
+            unlink("photos/newsimg/".$model->img);
+        }
+        $model->delete();
         return $this->redirect(['index']);
     }
 
+    /**
+     * Finds the News model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param int $id ID
+     * @return News the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     protected function findModel($id)
     {
-        if (($model = News::findOne($id)) !== null) {
+        if (($model = News::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
