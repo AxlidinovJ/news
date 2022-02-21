@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <b>User Name</b> <a class="float-right">@<?=$admin->username?></a>
               </li>
               <li class="list-group-item">
-                <a href="<?=url::to(['admin/logout'])?>" class="btn btn-warning ">Chiqish</a>
+                <a href="<?=url::to(['admin/logout'])?>" class="btn btn-danger btn-block">Chiqish</a>
               </li>
 
             </ul>

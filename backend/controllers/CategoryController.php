@@ -2,12 +2,12 @@
 
 namespace backend\controllers;
 
+use app\models\CategorySearch;
 use common\models\Category;
+use common\models\News;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-
 /**
  * CategoryController implements the CRUD actions for Category model.
  */
@@ -15,43 +15,40 @@ class CategoryController extends Controller
 {
    public $layout = "adminlte";
 
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ]
-        );
-    }
 
-    /**
-     * Lists all Category models.
-     *
-     * @return string
-     */
+
+
+    // public function actionIndex()
+    // {
+    //     $dataProvider = new ActiveDataProvider([
+    //         'query' => Category::find(),
+    //         /*
+    //         'pagination' => [
+    //             'pageSize' => 50
+    //         ],
+    //         */
+    //         'sort' => [
+    //             'defaultOrder' => [
+    //                 'id' => SORT_DESC,
+    //             ]
+    //         ],
+    //     ]);
+
+    //     \yii::$app->session->set('menu','category');
+
+
+    //     return $this->render('index', [
+    //         'dataProvider' => $dataProvider,
+    //     ]);
+    // }
+
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Category::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
-        ]);
-
+        \yii::$app->session->set('menu','category');
+        $searchModel = new CategorySearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -79,13 +76,13 @@ class CategoryController extends Controller
         $model = new Category();
 
         if ($this->request->isPost) {
+            $model->date = date('Y-m-d');
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
         }
-
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -111,27 +108,18 @@ class CategoryController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Category model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+ 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+        $news = News::find()->where('category_id='.$model->id)->all();
+        foreach ($news as $key) {
+            $key->delete();
+        }
+        $model->delete();
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Category model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Category the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Category::findOne(['id' => $id])) !== null) {

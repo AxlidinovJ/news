@@ -20,7 +20,7 @@ class AdminlteAsset extends AssetBundle
         // "css/ionicons.min.css",
     ];
     public $js = [
-    "plugins/bootstrap/js/bootstrap.bundle.min.js",
+    // "plugins/bootstrap/js/bootstrap.bundle.min.js",
     "plugins/chart.js/Chart.min.js",
     "plugins/sparklines/sparkline.js",
     "plugins/jqvmap/jquery.vmap.min.js",

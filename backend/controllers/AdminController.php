@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 use backend\models\User;
 use backend\models\PaswordForm;
+use common\models\Category;
+use common\models\News;
 use Yii;
 use yii\base\Security;
 use yii\filters\AccessControl;
@@ -34,7 +36,12 @@ class AdminController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        yii::$app->session->set('menu','dashbord');
+
+        $newsCount = News::find()->count();
+        $categoryCount = Category::find()->count();
+
+        return $this->render('index',['newsCount'=>$newsCount,'categoryCount'=>$categoryCount]);
     }
 
     public function actionLogout()
@@ -46,6 +53,7 @@ class AdminController extends Controller
 
     public function actionUser()
     {
+        yii::$app->session->set('menu','user');
         $id  =  Yii::$app->user->identity->id;
         $admin = User::findOne($id);
         $nomi = $admin->img ;

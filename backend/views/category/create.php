@@ -9,10 +9,13 @@ $this->title = 'Create Category';
 $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="category-create">
-
-    <?= $this->render('_form', [
+<div class="card card-primary card-outline">
+    <div class="card-body box-profile">
+        <div class="category-create">
+            <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
 
+        </div>
+    </div>
 </div>

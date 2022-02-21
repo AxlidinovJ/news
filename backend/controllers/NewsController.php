@@ -8,6 +8,8 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile as WebUploadedFile;
+use kartik\mpdf\Pdf;
+use app\models\NewsSearch;
 
 /**
  * NewsController implements the CRUD actions for News model.
@@ -22,24 +24,35 @@ class NewsController extends Controller
      *
      * @return string
      */
+    // public function actionIndex()
+    // {
+    //     $dataProvider = new ActiveDataProvider([
+    //         'query' => News::find(),
+    //         /*
+    //         'pagination' => [
+    //             'pageSize' => 50
+    //         ],
+    //         */
+
+    //         'sort' => [
+    //             'defaultOrder' => [
+    //                 'id' => SORT_DESC,
+    //             ]
+    //         ],
+    //     ]);
+    //     \yii::$app->session->set('menu','news');
+    //     return $this->render('index', [
+    //         'dataProvider' => $dataProvider,
+    //     ]);
+    // }
+
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => News::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            */
-
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-        ]);
-
+        $searchModel = new NewsSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        \yii::$app->session->set('menu','news');
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -145,4 +158,28 @@ class NewsController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+
+    public function actionPrint($id) {
+        $model = News::findOne($id);
+        $content = $this->renderPartial('exportpdf',['model'=>$model]);
+        
+        $pdf = new Pdf([
+            'mode' => Pdf::MODE_CORE, 
+            'format' => Pdf::FORMAT_A4, 
+            'orientation' => Pdf::ORIENT_PORTRAIT, 
+            'destination' => Pdf::DEST_BROWSER, 
+            'content' => $content,  
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+            'cssInline' => '.kv-heading-1{font-size:18px}', 
+            'options' => ['title' => 'Jamshidbek Axlidinov'],
+            'methods' => [ 
+                'SetHeader'=>['Jamshidbek Axlidinov'], 
+                'SetFooter'=>['{PAGENO}'],
+            ]
+        ]);
+        
+        return $pdf->render(); 
+    }
+
 }

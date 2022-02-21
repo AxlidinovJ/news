@@ -9,10 +9,15 @@ $this->title = 'Create News';
 $this->params['breadcrumbs'][] = ['label' => 'News', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="news-create">
 
-    <?= $this->render('_form', [
+<div class="card card-primary card-outline">
+    <div class="card-body box-profile">
+        <div class="news-create">
+
+            <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
 
+        </div>
+    </div>
 </div>

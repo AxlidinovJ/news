@@ -9,6 +9,7 @@ use common\widgets\Alert;
 use yii\helpers\Url;
 AdminlteAsset::register($this);
 $admin = yii::$app->user->identity;
+$menu = yii::$app->session->get('menu');
 ?>
 
 <?php $this->beginPage() ?>
@@ -18,7 +19,7 @@ $admin = yii::$app->user->identity;
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <!-- <title>AdminLTE 3 | Dashboard</title> -->
 
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -41,12 +42,6 @@ $admin = yii::$app->user->identity;
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-          <a href="<?=url::home()?>" class="nav-link">Home</a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">Contact</a>
         </li>
       </ul>
 
@@ -82,6 +77,28 @@ $admin = yii::$app->user->identity;
             <i class="fas fa-expand-arrows-alt"></i>
           </a>
         </li>
+        <li class="nav-item dropdown user-menu">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <img src="<?=url::to('@web/photos/users/'.$admin->img)?>" class="user-image img-circle elevation-2" alt="User Image">
+            <span class="d-none d-md-inline">Alexander Pierce</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
+
+            <li class="user-header bg-primary">
+              <img src="<?=url::to('@web/photos/users/'.$admin->img)?>" class="img-circle elevation-2" alt="User Image">
+              <p>
+               <?=$admin->name?>
+                <small><?=date('d-M Y',$admin->created_at)?></small>
+              </p>
+
+            <li class="user-footer">
+              <a href="<?=url::to(['/admin/user'])?>" class="btn btn-default btn-flat">Profile</a>
+              <a href="<?=url::to(['/admin/logout'])?>" class="btn btn-default btn-flat float-right">Logaut</a>
+            </li>
+          </ul>
+        </li>
+
+
 
         <li class="nav-item">
           <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
@@ -128,240 +145,34 @@ $admin = yii::$app->user->identity;
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-          <li class="nav-item">
-              <a href="<?=url::to(['category/index'])?>" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
+            <li class="nav-item">
+              <a href="<?=url::to(['admin/index'])?>" class="nav-link <?=$menu=='dashbord'?'active':''?>">
+                <i class="nav-icon fa fa-database"></i>
+                <p>Dashbord</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="<?=url::to(['category/index'])?>" class="nav-link <?=$menu=='category'?'active':''?>">
+                <i class="nav-icon fa fa-h-square"></i>
                 <p>Categorys</p>
               </a>
             </li>
 
             <li class="nav-item">
-              <a href="<?=url::to(['news/index'])?>" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
+              <a href="<?=url::to(['news/index'])?>" class="nav-link <?=$menu=='news'?'active':''?>">
+                <i class="nav-icon fa fa-rss" aria-hidden="true"></i>
                 <p>News</p>
               </a>
             </li>
 
+            <li class="nav-item">
+              <a href="<?=url::to(['admin/user'])?>" class="nav-link <?=$menu=='user'?'active':''?>">
+                <i class="nav-icon fa fa-user-circle" aria-hidden="true"></i>
+                <p><?=$admin->name?></p>
+              </a>
+            </li>
 
-
-            <!-- <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-copy"></i>
-                <p>
-                  Layout Options
-                  <i class="fas fa-angle-left right"></i>
-                  <span class="badge badge-info right">6</span>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="pages/layout/top-nav" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Top Navigation</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/layout/top-nav-sidebar" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Top Navigation + Sidebar</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/layout/boxed" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Boxed</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/layout/fixed-sidebar" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Fixed Sidebar</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/layout/fixed-sidebar-custom" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Fixed Sidebar <small>+ Custom Area</small></p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/layout/fixed-topnav" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Fixed Navbar</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/layout/fixed-footer" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Fixed Footer</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/layout/collapsed-sidebar" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Collapsed Sidebar</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-chart-pie"></i>
-                <p>
-                  Charts
-                  <i class="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="pages/charts/chartjs" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>ChartJS</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/charts/flot" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Flot</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/charts/inline" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Inline</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/charts/uplot" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>uPlot</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-tree"></i>
-                <p>
-                  UI Elements
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="pages/UI/general" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>General</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/UI/icons" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Icons</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/UI/buttons" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Buttons</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/UI/sliders" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Sliders</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/UI/modals" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Modals & Alerts</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/UI/navbar" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Navbar & Tabs</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/UI/timeline" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Timeline</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/UI/ribbons" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Ribbons</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-edit"></i>
-                <p>
-                  Forms
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="pages/forms/general" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>General Elements</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/forms/advanced" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Advanced Elements</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/forms/editors" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Editors</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/forms/validation" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Validation</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-table"></i>
-                <p>
-                  Tables
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="pages/tables/simple" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Simple Tables</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/tables/data" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>DataTables</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/tables/jsgrid" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>jsGrid</p>
-                  </a>
-                </li>
-              </ul>
-            </li> -->
           </ul>
         </nav>
         <!-- /.sidebar-menu -->
@@ -374,25 +185,24 @@ $admin = yii::$app->user->identity;
       <!-- Content Header (Page header) -->
 
       <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0"><?=$this->title?></h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-          <?= Breadcrumbs::widget([
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0"><?=$this->title?></h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             'options' => [
               'class' => 'float-sm-right',
             ],
           ]) ?>
-        <?= Alert::widget() ?>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-        <?=$content?>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+          <?=$content?>
 
-      </div><!-- /.container-fluid -->
-    </div>
+        </div><!-- /.container-fluid -->
+      </div>
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">

@@ -11,15 +11,19 @@ use common\models\News;
 $this->title = 'News';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="news-index">
+<div class="card card-primary card-outline">
+    <div class="card-body box-profile">
+        <div class="news-index">
 
-    <p>
-        <?= Html::a('Create News', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+            <p>
+                <?= Html::a('<i class="fa fa-plus-square" aria-hidden="true"></i>', ['create'], ['class' => 'btn btn-success']) ?>
+            </p>
 
 
-    <?= GridView::widget([
+            <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -41,6 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             // 'category_id',
            [
+               'label'=>'Katagoriya',
                'attribute'=>'category_id',
                'value'=>function($data){
                    return $data->category->catagory_name;   
@@ -49,6 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'content:ntext',
             //'time',
            [
+               'attribute'=>'author',
                'format'=>'html',
                'label'=>'Author',
                'value'=>function($data){
@@ -57,15 +63,20 @@ $this->params['breadcrumbs'][] = $this->title;
            ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template'=>"{view} {update} {delete}",
+                'template'=>"{view} {update} {delete} {print}",
                 'buttons'=>[
                     'delete'=>function($url,$data){
                         return html::a('<i class="fa fa-trash"></i>',$url);
-                    }
+                    },
+                    'print'=>function($url,$data){
+                        return html::a('<i class="fa fa-print"></i>',$url,['target'=>"_blank"]);
+                    },
                 ]   
 
              ],
         ],
     ]); ?>
 
+        </div>
+    </div>
 </div>

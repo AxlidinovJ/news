@@ -7,6 +7,8 @@ use common\models\News;
 use common\models\Category;
 use frontend\models\SendmailForm;
 use yii\data\Pagination;
+use kartik\mpdf\Pdf;
+
 
 class NewsController extends Controller
 {
@@ -52,6 +54,28 @@ class NewsController extends Controller
         yii::$app->session->set('xolat','view');
         $news  = News::findOne($id);
         return $this->render('view',['news'=>$news]);
+    }
+
+    public function actionPrint($id) {
+        $model = News::findOne($id);
+        $content = $this->renderPartial('exportpdf',['model'=>$model]);
+        
+        $pdf = new Pdf([
+            'mode' => Pdf::MODE_CORE, 
+            'format' => Pdf::FORMAT_A4, 
+            'orientation' => Pdf::ORIENT_PORTRAIT, 
+            'destination' => Pdf::DEST_BROWSER, 
+            'content' => $content,  
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+            'cssInline' => '.kv-heading-1{font-size:18px}', 
+            'options' => ['title' => 'Jamshidbek Axlidinov'],
+            'methods' => [ 
+                'SetHeader'=>['Jamshidbek Axlidinov'], 
+                'SetFooter'=>['{PAGENO}'],
+            ]
+        ]);
+        
+        return $pdf->render(); 
     }
     
 }

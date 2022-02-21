@@ -12,32 +12,47 @@ use yii\bootstrap4\Alert;
 
 $this->title = 'Categories';
 $this->params['breadcrumbs'][] = $this->title;
+// $this->params['text'] = '<a href="">tr</a>';
 ?>
 
 
-<div class="category-index">
 
-    <p>
-        <?= Html::a('Create Category', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+<div class="card card-primary card-outline">
+    <div class="card-body box-profile">
+        <div class="category-index">
+
+            <p>
+                <?= Html::a('<i class="fa fa-plus-square" aria-hidden="true"></i>', ['create'], ['class' => 'btn btn-success']) ?>
+            </p>
 
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
             'catagory_name',
             'date',
             [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Category $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
+                'class' => 'yii\grid\ActionColumn',
+                'template'=>"{view} {update} {delete}",
+                'buttons'=>[
+                    'delete'=>function($url,$data){
+                        return html::a('<i class="fa fa-trash"></i>',$url, [
+                            'data'=>[
+                                'confirm' => "TEst"
+                            ]
+                        ]);
+                    }
+                ]   
+
+             ],
         ],
     ]); ?>
 
 
+        </div>
+    </div>
 </div>

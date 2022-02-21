@@ -11,12 +11,13 @@ function ImgagesFind($datas){
     }
 }
 ?>
+
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2">
-					<h2><?=$news->title?> <a target="_blank" href='<?=url::to(['news/print','id'=>$news->id])?>'><img src="<?=url::to('@web/images/print.svg')?>" alt="" width="32"></a></h2>
+					<h2><?=$model->title?></h2>
 					<!-- <div class="fh5co-spacer fh5co-spacer-sm"></div> -->
 						<?php
-							$data = $news->content;
+							$data = $model->content;
 							echo str_replace(["\n","<img src="],["</p><p>",'<img class="img-rounded img-responsive" src='],$data);
 						?>
 					</p>

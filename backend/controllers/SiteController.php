@@ -61,6 +61,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        yii::$app->session->set('menu','00');
         return $this->render('index');
     }
 
