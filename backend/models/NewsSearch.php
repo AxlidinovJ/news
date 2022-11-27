@@ -67,7 +67,8 @@ class NewsSearch extends News
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'img', $this->img])->andFilterWhere(['like', 'category.catagory_name', trim($this->category_id)])
+            ->andFilterWhere(['like', 'img', $this->img])
+            ->andFilterWhere(['like', 'category.catagory_name', ($this->category_id)])
             ->andFilterWhere(['like', 'content', $this->content])->andFilterWhere(['like', 'user.username', $this->author]);
 
         return $dataProvider;
